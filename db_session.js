@@ -83,16 +83,6 @@ app.get('/login', (req, res) => {
     });
 });
 
-// 임시 user
-// const users = [
-//     { id: 'hello', pw: 'world' },
-//     { id: 'good', pw: 'bye' }
-// ];
-
-// const users = client.query('select * from peopled', (err, data) => {
-//     data 
-// });
-
 // id, pw 체크
 
 function intervalFunc() {
