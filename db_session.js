@@ -11,17 +11,17 @@ const MySQLStore = require('express-mysql-session')(session);
 const PORT = 3000;
 
 let client = mysql.createConnection({
-    user:'aa',
-  password:'aaa',
-  database:'hahaha'
+    user:'root',
+  password:'prince0325',
+  database:'graduated'
 });
 
 const options = {
     host: 'localhost',
     port: 3306,
-    user: 'aa',
-    password: 'aaa',
-    database: 'gra'
+    user: 'root',
+    password: 'prince0325',
+    database: 'graduated'
 };
 
 const sessionStore = new MySQLStore(options);
