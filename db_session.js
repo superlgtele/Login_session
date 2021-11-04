@@ -4,6 +4,7 @@ const session = require('express-session');
 const fs = require('fs');
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
+const alert = require('alert');
 
 const app = (module.exports = express());
 const server = http.createServer(app);
@@ -59,6 +60,7 @@ app.post('/register', (req, res) => {
             client.query('insert into peopled(id, pw) values(?,?)',[
                 id, pw
             ]);
+            alert('회원가입 성공!');
             res.redirect('/login');
         } else {
             console.log('회원가입 실패');
@@ -92,17 +94,19 @@ app.get('/login', (req, res) => {
 // });
 
 // id, pw 체크
-client.query('select * from peopled' , (err, users) => {
-    login = (id, pw) => {
-    let len = users.length;
 
-    for (let i = 0; i < len; i++) {
-        if (id === users[i].id && pw === users[i].pw) return id;
-             }
+function intervalFunc() {
+    client.query('select * from peopled' , (err, users) => {
+        login = (id, pw) => {
+        let len = users.length;
+        for (let i = 0; i < len; i++) {
+            if (id === users[i].id && pw === users[i].pw) return id;
+        }
+        return '';
+    }
+})};
 
-    return '';
-             }
-    });
+setInterval(intervalFunc, 1000);
 
 // login 요청
 app.post('/login', (req, res) => {
