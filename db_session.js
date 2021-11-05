@@ -89,6 +89,7 @@ function intervalFunc() {
     client.query('select * from peopled' , (err, users) => {
         login = (id, pw) => {
         let len = users.length;
+        console.log(len);
         for (let i = 0; i < len; i++) {
             if (id === users[i].id && pw === users[i].pw) return id;
         }
@@ -112,34 +113,46 @@ app.post('/login', (req, res) => {
             console.log(err);
             return res.status(500).send('<h1>500 error</h1>');
         }
-        res.redirect('/');
+        res.redirect('/logout');
     });
 });
 
 // main 페이지
 app.get('/', (req, res) => {
-    if (req.session.user === undefined) return res.redirect('/login');
+    // if (req.session.user === undefined) return res.redirect('/login');
 
     fs.readFile('./webpage/main.html', (error, data) => {
         if (error) {
             console.log(error);
             return res.status(500).send('<h1>500 error</h1>');
         }
-        res.writeHead(200, { 'Content-Type': 'text/html' });
+        res.writeHead(200, { 'Content-Type':'text/html; charset=utf-8'});
+        res.end(data);
+    });
+});
+
+app.get('/logout', (req, res) => {
+    if (req.session.user === undefined) return alert('잘못된 접근입니다!');
+    fs.readFile('./webpage/logout.html', (error, data) => {
+        if (error) {
+            console.log(error);
+            return res.status(500).send('<h1>500 error</h1>');
+        }
+        res.writeHead(200, { 'Content-Type':'text/html; charset=utf-8'});
         res.end(data);
     });
 });
 
 // logout 요청
-app.get('/logout', (req, res) => {
-    req.session.destroy(err => {
-        if (err) {
-            console.log(error);
-            return res.status(500).send('<h1>500 error</h1>');
-        }
-        res.redirect('/');
-    });
-});
+// app.get('/logout', (req, res) => {
+//     req.session.destroy(err => {
+//         if (err) {
+//             console.log(error);
+//             return res.status(500).send('<h1>500 error</h1>');
+//         }
+//         res.redirect('/');
+//     });
+// });
 
 server.listen(PORT, () => {
     console.log(`Server running on ${PORT}`);
