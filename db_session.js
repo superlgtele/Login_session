@@ -71,8 +71,7 @@ app.post('/register', (req, res) => {
 });
 
 app.get('/login', (req, res) => {
-    if (req.session.user !== undefined) return res.redirect('/');
-
+    // if (req.session.user !== undefined) return res.redirect('/');
     fs.readFile('./webpage/login.html', (error, data) => {
         if (error) {
             console.log(error);
