@@ -11,6 +11,9 @@ const server = http.createServer(app);
 const MySQLStore = require('express-mysql-session')(session);
 const PORT = 3000;
 
+app.set('view engine', 'ejs');
+app.set('views', './views');
+
 let client = mysql.createConnection({
     user:'root',
   password:'prince0325',
@@ -39,14 +42,7 @@ app.use(
 app.use(bodyParser.urlencoded({extended: false }));
 
 app.get('/register', (req, res) => {
-    fs.readFile('./webpage/register.html', (error, data) => {
-        if (error) {
-            console.log(error);
-            return res.status(500).send('<h1>500 error</h1>');
-        }
-        res.writeHead(200, { 'Content-Type': 'text/html' });
-        res.end(data);
-    });
+    res.render('register');
 })
 
 app.post('/register', (req, res) => {
@@ -61,7 +57,7 @@ app.post('/register', (req, res) => {
                 id, pw
             ]);
             alert('회원가입 성공!');
-            res.redirect('/login');
+            res.render('login')
         } else {
             console.log('회원가입 실패');
             res.send('<script>alert("회원가입 실패");</script>')
@@ -72,15 +68,8 @@ app.post('/register', (req, res) => {
 
 app.get('/login', (req, res) => {
     // if (req.session.user !== undefined) return res.redirect('/');
-    fs.readFile('./webpage/login.html', (error, data) => {
-        if (error) {
-            console.log(error);
-            return res.status(500).send('<h1>500 error</h1>');
-        }
-        res.writeHead(200, { 'Content-Type': 'text/html' });
-        res.end(data);
+    res.render('login');
     });
-});
 
 // id, pw 체크
 
@@ -112,34 +101,27 @@ app.post('/login', (req, res) => {
             console.log(err);
             return res.status(500).send('<h1>500 error</h1>');
         }
-        res.redirect('/logout');
+        res.redirect('/secret');
     });
 });
 
 // main 페이지
 app.get('/', (req, res) => {
     // if (req.session.user === undefined) return res.redirect('/login');
-
-    fs.readFile('./webpage/main.html', (error, data) => {
-        if (error) {
-            console.log(error);
-            return res.status(500).send('<h1>500 error</h1>');
-        }
-        res.writeHead(200, { 'Content-Type':'text/html; charset=utf-8'});
-        res.end(data);
-    });
+    res.render('main');
 });
 
-app.get('/logout', (req, res) => {
-    if (req.session.user === undefined) return alert('잘못된 접근입니다!');
-    fs.readFile('./webpage/logout.html', (error, data) => {
-        if (error) {
-            console.log(error);
-            return res.status(500).send('<h1>500 error</h1>');
-        }
-        res.writeHead(200, { 'Content-Type':'text/html; charset=utf-8'});
-        res.end(data);
-    });
+app.get('/secret', (req, res) => {
+    if (req.session.user === undefined) return alert('로그인하세요!');
+    // fs.readFile('./webpage/secret.html', (error, data) => {
+    //     if (error) {
+    //         console.log(error);
+    //         return res.status(500).send('<h1>500 error</h1>');
+    //     }
+    //     res.writeHead(200, { 'Content-Type':'text/html; charset=utf-8'});
+    //     res.end(data);
+    // });
+    res.render('secret')
 });
 
 // logout 요청
