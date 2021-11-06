@@ -40,6 +40,7 @@ app.use(
 );
 
 app.use(bodyParser.urlencoded({extended: false }));
+app.use(express.static(__dirname + "/public"));
 
 app.get('/register', (req, res) => {
     res.render('register');
@@ -93,7 +94,7 @@ app.post('/login', (req, res) => {
     let pw = req.body.pw;
     let user = login(id, pw);
    
-    if (user === '') return res.redirect('/login');
+    if (user === '') return alert('잘못된 아이디 혹은 패스워드입니다');
   
     req.session.user = user;
     req.session.save(err => {
@@ -125,15 +126,12 @@ app.get('/secret', (req, res) => {
 });
 
 // logout 요청
-// app.get('/logout', (req, res) => {
-//     req.session.destroy(err => {
-//         if (err) {
-//             console.log(error);
-//             return res.status(500).send('<h1>500 error</h1>');
-//         }
-//         res.redirect('/');
-//     });
-// });
+app.get('/logout', (req, res) => {
+    req.session.destroy( function(err) {
+        if (err) throw err;
+        res.redirect('/')
+    })
+})
 
 server.listen(PORT, () => {
     console.log(`Server running on ${PORT}`);
