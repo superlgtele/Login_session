@@ -15,17 +15,17 @@ app.set('view engine', 'ejs');
 app.set('views', './views');
 
 let client = mysql.createConnection({
-    user:'root',
-  password:'prince0325',
-  database:'graduated'
+    user:'your_userid',
+  password:'your_password',
+  database:'your_db'
 });
 
 const options = {
     host: 'localhost',
     port: 3306,
-    user: 'root',
-    password: 'prince0325',
-    database: 'graduated'
+    user: 'your_userid',
+    password: 'your_password',
+    database: 'your_db'
 };
 
 const sessionStore = new MySQLStore(options);
