@@ -32,10 +32,10 @@ const sessionStore = new MySQLStore(options);
 
 app.use(
     session({
-        secret: 'secret key',
+        secret: 'honghong',
         store: sessionStore,
         resave: false,
-        saveUninitialized: false
+        saveUninitialized: true
     })
 );
 
@@ -91,10 +91,10 @@ setInterval(intervalFunc, 1000);
 app.post('/login', (req, res) => {
     let id = req.body.id;
     let pw = req.body.pw;
-
     let user = login(id, pw);
+   
     if (user === '') return res.redirect('/login');
-
+  
     req.session.user = user;
     req.session.save(err => {
         if (err) {
