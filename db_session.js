@@ -114,6 +114,8 @@ app.get('/', (req, res) => {
 
 app.get('/secret', (req, res) => {
     if (req.session.user === undefined) return alert('로그인하세요!');
+    // alert를 서버에서 띄워주는 것이 아닌 프론트(ejs)에서 띄워줘야함! 수정해야할 부분!
+
     // fs.readFile('./webpage/secret.html', (error, data) => {
     //     if (error) {
     //         console.log(error);
